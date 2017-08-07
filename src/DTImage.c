@@ -1,3 +1,11 @@
+/*
+ *  DTImage.c
+ *  dither Utility
+ *
+ *  Implementation of image handling functions.
+ *
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <DTImage.h>

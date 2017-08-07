@@ -1,3 +1,11 @@
+/*
+ *  DTImage.h
+ *  dither Utility
+ *
+ *  Basic image related structures and function declarations.
+ *
+ */
+
 #ifndef DT_IMAGE
 #define DT_IMAGE
 

@@ -1,3 +1,12 @@
+/* 
+ *  main.c
+ *  dither Utility
+ *
+ *  Created on August 2017 by Cesar Tessarin.
+ *  Rewritten and expanded from the 2010 version.
+ *
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <DTImage.h>
