@@ -9,8 +9,10 @@
 #ifndef DT_IMAGE
 #define DT_IMAGE
 
+typedef unsigned char byte;
+
 typedef struct {
-    unsigned char r, g, b;
+    byte r, g, b;
 } DTPixel;
 
 typedef struct {
@@ -22,5 +24,7 @@ typedef struct {
 
 DTImage *CreateImageFromFile(char *filename);
 void WriteImageToFile(DTImage *img, char *filename);
+
+DTPixel PixelFromRGB(byte r, byte g, byte b);
 
 #endif

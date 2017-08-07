@@ -53,6 +53,17 @@ WriteImageToFile(DTImage *img, char *filename)
 	fwrite(&img->pixels[i], sizeof(DTPixel), 1, file);
 }
 
+DTPixel
+PixelFromRGB(byte r, byte g, byte b)
+{
+    DTPixel pixel;
+    pixel.r = r;
+    pixel.g = g;
+    pixel.b = b;
+
+    return pixel;
+}
+
 void
 ReadPixelsFromFile(DTImage *img, FILE *file)
 {
