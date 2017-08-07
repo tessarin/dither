@@ -33,3 +33,27 @@ StandardPaletteRGB()
 
     return palette;
 }
+
+DTPixel
+FindClosestColorFromPalette(DTPixel needle, DTPalette palette)
+{
+    // search for smallest Euclidean distance
+    int index;
+    int d, minimal = 255 * 255 * 3 + 1;
+    int dR, dG, dB;
+    DTPixel current;
+
+    for (int i = 0; i < palette.size; i++) {
+	current = palette.colors[i];
+	dR = needle.r - current.r;
+	dG = needle.g - current.g;
+	dB = needle.b - current.b;
+	d = dR * dR + dG * dG + dB * dB;
+	if (d < minimal) {
+	    minimal = d;
+	    index = i;
+	}
+    }
+
+    return palette.colors[index];
+}
