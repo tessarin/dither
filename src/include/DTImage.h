@@ -12,5 +12,6 @@ typedef struct {
 } DTImage;
 
 DTImage *CreateImageFromFile(char *filename);
+void WriteImageToFile(DTImage *img, char *filename);
 
 #endif

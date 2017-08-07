@@ -31,6 +31,20 @@ CreateImageFromFile(char *filename)
 }
 
 void
+WriteImageToFile(DTImage *img, char *filename)
+{
+    FILE *file = fopen(filename, "w");
+    if (file == NULL) {
+	perror("Could not open output file");
+	return;
+    }
+
+    fprintf(file, "P6\n%d %d\n255\n", img->width, img->height);
+    for (int i = 0; i < img->width * img->height; i++)
+	fwrite(&img->pixels[i], sizeof(DTPixel), 1, file);
+}
+
+void
 ReadPixelsFromFile(DTImage *img, FILE *file)
 {
     img->pixels = malloc(sizeof(DTPixel) * img->width * img->height);
