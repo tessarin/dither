@@ -10,6 +10,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <DTImage.h>
+#include <DTDither.h>
 
 int
 main(int argc, char ** argv)
@@ -20,6 +21,7 @@ main(int argc, char ** argv)
     }
 
     DTImage *input = CreateImageFromFile(argv[1]);
+    ApplyFloydSteinbergDither(input);
     WriteImageToFile(input, argv[2]);
 
     return 0;
