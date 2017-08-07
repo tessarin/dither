@@ -12,6 +12,9 @@ dither: $(OBJECTS)
 analyse:
 	clang $(CFLAGS) --analyze $(SOURCES)
 
+debug: CFLAGS += -g
+debug: dither
+
 $(OBJECTS): $(OBJDIR)/%.o : $(SRCDIR)/%.c
 	@mkdir -p $(OBJDIR)
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -19,4 +22,4 @@ $(OBJECTS): $(OBJDIR)/%.o : $(SRCDIR)/%.c
 .PHONY: clean
 
 clean:
-	-rm -r $(OBJDIR) *.plist dither
+	-rm -rf $(OBJDIR) *.plist dither
