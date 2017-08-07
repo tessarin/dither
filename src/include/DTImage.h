@@ -8,6 +8,7 @@ typedef struct {
 typedef struct {
     int width;
     int height;
+    unsigned long resolution;
     DTPixel *pixels;
 } DTImage;
 

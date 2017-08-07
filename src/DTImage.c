@@ -23,6 +23,7 @@ CreateImageFromFile(char *filename)
     DTImage *image = malloc(sizeof(DTImage));
 
     fscanf(file, " %d %d %*d ", &image->width, &image->height);
+    image->resolution = image->width * image->height;
     ReadPixelsFromFile(image, file);
 
     fclose(file);
@@ -40,7 +41,7 @@ WriteImageToFile(DTImage *img, char *filename)
     }
 
     fprintf(file, "P6\n%d %d\n255\n", img->width, img->height);
-    for (int i = 0; i < img->width * img->height; i++)
+    for (int i = 0; i < img->resolution; i++)
 	fwrite(&img->pixels[i], sizeof(DTPixel), 1, file);
 }
 
@@ -49,6 +50,6 @@ ReadPixelsFromFile(DTImage *img, FILE *file)
 {
     img->pixels = malloc(sizeof(DTPixel) * img->width * img->height);
 
-    for (int i = 0; i < img->width * img->height; i++)
+    for (int i = 0; i < img->resolution; i++)
 	fread(&img->pixels[i], sizeof(DTPixel), 1, file);
 }
