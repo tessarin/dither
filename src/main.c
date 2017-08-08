@@ -22,14 +22,18 @@ main(int argc, char ** argv)
 {
     char *paletteID = NULL;
     char *inputFile, *outputFile;
+    int verbose = 0;
     int c;
 
     opterr = 0;
 
-    while ((c = getopt(argc, argv, "p:")) != -1) {
+    while ((c = getopt(argc, argv, "vp:")) != -1) {
 	switch (c) {
 	    case 'p':
 		paletteID = optarg;
+		break;
+	    case 'v':
+		verbose = 1;
 		break;
 	    case '?':
 		fprintf(stderr, "Ignoring unknown option: -%c\n", optopt);
@@ -38,7 +42,8 @@ main(int argc, char ** argv)
 
     // check if there is still two arguments remaining, for i/o
     if (argc - optind != 2) {
-	fprintf(stderr, "Usage: %s [-p palette[.size]] input output\n", argv[0]);
+	fprintf(stderr,
+	    "Usage: %s [-p palette[.size]] [-v] input output\n", argv[0]);
 	return 1;
     }
 
@@ -51,6 +56,15 @@ main(int argc, char ** argv)
 
     DTPalette *palette = PaletteForIdentifier(paletteID);
     if (palette == NULL) return 3;
+
+    // dump palette if verbose option was set
+    if (verbose)
+	for (int i = 0; i < palette->size; i++)
+	    printf("%d,%d,%d\n",
+		palette->colors[i].r,
+		palette->colors[i].g,
+		palette->colors[i].b
+	    );
 
     ApplyFloydSteinbergDither(input, palette);
     WriteImageToFile(input, outputFile);
