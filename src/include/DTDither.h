@@ -12,6 +12,6 @@
 #include <DTImage.h>
 #include <DTPalette.h>
 
-void ApplyFloydSteinbergDither(DTImage *image, DTPalette palette);
+void ApplyFloydSteinbergDither(DTImage *image, DTPalette *palette);
 
 #endif
