@@ -10,9 +10,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <string.h>
 #include <DTImage.h>
 #include <DTDither.h>
 #include <DTPalette.h>
+
+DTPalette *PaletteForIdentifier(char *s);
 
 int
 main(int argc, char ** argv)
@@ -35,8 +38,8 @@ main(int argc, char ** argv)
 
     // check if there is still two arguments remaining, for i/o
     if (argc - optind != 2) {
-	fprintf(stderr, "Usage: %s [-p palette] input output\n", argv[0]);
-	exit(EXIT_FAILURE);
+	fprintf(stderr, "Usage: %s [-p palette[.size]] input output\n", argv[0]);
+	return 1;
     }
 
     // all arguments ok
@@ -44,10 +47,48 @@ main(int argc, char ** argv)
     outputFile = argv[optind+1];
 
     DTImage *input = CreateImageFromFile(inputFile);
-    if (input == NULL) return 1;
+    if (input == NULL) return 2;
 
-    ApplyFloydSteinbergDither(input, StandardPaletteRGB());
+    DTPalette *palette = PaletteForIdentifier(paletteID);
+    if (palette == NULL) return 3;
+
+    ApplyFloydSteinbergDither(input, palette);
     WriteImageToFile(input, outputFile);
 
     return 0;
+}
+
+DTPalette *
+PaletteForIdentifier(char *str)
+{
+    if (str == NULL) return StandardPaletteRGB();
+
+    char *name, *sizeStr;
+    char *sep = ".";
+    name = strtok(str, sep);
+    sizeStr = strtok(NULL, sep);
+    int size = 0;
+
+    // if size was inserted, transform to int and check if is valid
+    if (sizeStr) {
+	size = (int)strtol(sizeStr, (char **)NULL, 10);
+	if (size <= 0) {
+	    fprintf(stderr, "Invalid palette size, aborting.\n");
+	    return NULL;
+	}
+    }
+
+    // RGB
+    if (strcmp(name, "rgb") == 0) {
+	if (size) fprintf(stderr, "Ignored palette size.\n");
+	return StandardPaletteRGB();
+    }
+
+    if (strcmp(name, "bw") == 0) {
+	return StandardPaletteBW();
+    }
+
+    // unknown palette
+    fprintf(stderr, "Unrecognized palette identifier, aborting.\n");
+    return NULL;
 }
