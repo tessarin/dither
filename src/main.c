@@ -61,7 +61,7 @@ main(int argc, char ** argv)
     // dump palette if verbose option was set
     if (verbose)
 	for (int i = 0; i < palette->size; i++)
-	    printf("%d,%d,%d\n",
+	    printf("%d %d %d\n",
 		palette->colors[i].r,
 		palette->colors[i].g,
 		palette->colors[i].b
