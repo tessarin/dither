@@ -85,7 +85,13 @@ PaletteForIdentifier(char *str)
     }
 
     if (strcmp(name, "bw") == 0) {
-	return StandardPaletteBW();
+	if (size == 1) {
+	    fprintf(stderr,
+		    "Invalid palette size for B&W. Must be at least 2.\n");
+	    return NULL;
+	}
+	if (!size) size = 2;
+	return StandardPaletteBW(size);
     }
 
     // unknown palette

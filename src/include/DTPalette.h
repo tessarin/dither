@@ -16,7 +16,7 @@ typedef struct {
     DTPixel *colors;
 } DTPalette;
 
-DTPalette *StandardPaletteBW();
+DTPalette *StandardPaletteBW(int size);
 DTPalette *StandardPaletteRGB();
 
 DTPixel FindClosestColorFromPalette(DTPixel pixel, DTPalette *palette);

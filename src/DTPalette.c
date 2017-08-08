@@ -8,15 +8,24 @@
 
 #include <DTPalette.h>
 #include <stdlib.h>
+#include <math.h>
 
 DTPalette *
-StandardPaletteBW()
+StandardPaletteBW(int size)
 {
+    if (size < 2) return NULL;
+
     DTPalette *palette = malloc(sizeof(DTPalette));
-    palette->size = 2;
-    palette->colors = malloc(sizeof(DTPixel) * 2);
-    palette->colors[0] = PixelFromRGB(0, 0, 0);
-    palette->colors[1] = PixelFromRGB(0xFF, 0xFF, 0xFF);
+    palette->size = size;
+    palette->colors = malloc(sizeof(DTPixel) * size);
+
+    float step = 255.0f / (size - 1);
+    for (int i = 0; i < size; i++)
+	palette->colors[i] = PixelFromRGB(
+	    roundf(i*step),
+	    roundf(i*step),
+	    roundf(i*step)
+	);
 
     return palette;
 }
