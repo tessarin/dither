@@ -16,6 +16,7 @@
 #include <DTPalette.h>
 
 DTPalette *PaletteForIdentifier(char *s);
+DTPalette *ReadPaletteFromStdin(int size);
 
 int
 main(int argc, char ** argv)
@@ -108,7 +109,33 @@ PaletteForIdentifier(char *str)
 	return StandardPaletteBW(size);
     }
 
+    if (strcmp(name, "custom") == 0) {
+	if (!size) {
+	    fprintf(stderr, "Size required for custom palette, aborting.\n");
+	    return NULL;
+	}
+	return ReadPaletteFromStdin(size);
+    }
+
     // unknown palette
     fprintf(stderr, "Unrecognized palette identifier, aborting.\n");
     return NULL;
+}
+
+DTPalette *
+ReadPaletteFromStdin(int size)
+{
+    DTPalette *palette = malloc(sizeof(DTPalette));
+    palette->size = size;
+    palette->colors = malloc(sizeof(DTPixel) * size);
+
+    int r, g, b;
+    for (int i = 0; i < size; i++) {
+	scanf(" %d %d %d", &r, &g, &b);
+	palette->colors[i].r = r;
+	palette->colors[i].g = g;
+	palette->colors[i].b = b;
+    }
+
+    return palette;
 }
