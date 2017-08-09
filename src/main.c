@@ -139,3 +139,5 @@ ReadPaletteFromStdin(int size)
 
     return palette;
 }
+
+/* vim:ts=8:sts=4:sw=4 */
