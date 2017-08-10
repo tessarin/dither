@@ -11,12 +11,15 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+#include <math.h>
 #include <DTImage.h>
 #include <DTDither.h>
 #include <DTPalette.h>
+#include <MCQuantization.h>
 
-DTPalette *PaletteForIdentifier(char *s);
+DTPalette *PaletteForIdentifier(char *s, DTImage *img);
 DTPalette *ReadPaletteFromStdin(int size);
+DTPalette *QuantizedPaletteForImage(DTImage *image, int size);
 
 int
 main(int argc, char ** argv)
@@ -55,7 +58,7 @@ main(int argc, char ** argv)
     DTImage *input = CreateImageFromFile(inputFile);
     if (input == NULL) return 2;
 
-    DTPalette *palette = PaletteForIdentifier(paletteID);
+    DTPalette *palette = PaletteForIdentifier(paletteID, input);
     if (palette == NULL) return 3;
 
     // dump palette if verbose option was set
@@ -74,7 +77,7 @@ main(int argc, char ** argv)
 }
 
 DTPalette *
-PaletteForIdentifier(char *str)
+PaletteForIdentifier(char *str, DTImage *image)
 {
     if (str == NULL) return StandardPaletteRGB();
 
@@ -117,6 +120,19 @@ PaletteForIdentifier(char *str)
 	return ReadPaletteFromStdin(size);
     }
 
+    if (strcmp(name, "auto") == 0) {
+	if (!size) {
+	    fprintf(stderr,
+		    "Size required for automatic palette, aborting.\n");
+	    return NULL;
+	}
+	if (size & (size - 1)) {
+	    fprintf(stderr, "Size must be a power of 2, aborting.\n");
+	    return NULL;
+	}
+	return QuantizedPaletteForImage(image, size);
+    }
+
     // unknown palette
     fprintf(stderr, "Unrecognized palette identifier, aborting.\n");
     return NULL;
@@ -136,6 +152,38 @@ ReadPaletteFromStdin(int size)
 	palette->colors[i].g = g;
 	palette->colors[i].b = b;
     }
+
+    return palette;
+}
+
+DTPalette *
+QuantizedPaletteForImage(DTImage *image, int size)
+{
+    MCTriplet *data = malloc(sizeof(MCTriplet) * image->resolution);
+    MCTriplet *colors;
+    DTPalette *palette;
+
+    for (int i = 0; i < image->resolution; i++)
+	data[i] = MCTripletMake(
+	    image->pixels[i].r,
+	    image->pixels[i].g,
+	    image->pixels[i].b
+	);
+
+    colors = MCQuantizeData(data, image->resolution, log2(size));
+
+    palette = malloc(sizeof(DTPalette));
+    palette->size = size;
+    palette->colors = malloc(sizeof(DTPixel) * size);
+
+    for (int i = 0; i < size; i++) {
+	palette->colors[i].r = colors[i].value[0];
+	palette->colors[i].g = colors[i].value[1];
+	palette->colors[i].b = colors[i].value[2];
+    }
+
+    free(data);
+    free(colors);
 
     return palette;
 }
