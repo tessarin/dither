@@ -1,4 +1,4 @@
-# Dither • Color Quantization and Dithering
+# Dither - Color Quantization and Dithering
 
 This is a small program dedicated to reducing the number of colors in an
 image. It operates with files in binary PPM format ([Portable PixMap][ppm]),
@@ -33,7 +33,7 @@ By default, `dither` will use a 3-bit RGB palette and dithering when
 processing an image. Other possible palettes include:
 
  - Grayscale of any given size
- - Automatic, generated in the given size with the median-cut quantization
+ - Automatic, generated with the given size using the median-cut quantization
    algorithm
  - Custom palette
 

@@ -27,11 +27,12 @@ main(int argc, char ** argv)
     char *paletteID = NULL;
     char *inputFile, *outputFile;
     int verbose = 0;
+    int dither = 1;
     int c;
 
     opterr = 0;
 
-    while ((c = getopt(argc, argv, "vp:")) != -1) {
+    while ((c = getopt(argc, argv, "dvp:")) != -1) {
 	switch (c) {
 	    case 'p':
 		paletteID = optarg;
@@ -39,19 +40,22 @@ main(int argc, char ** argv)
 	    case 'v':
 		verbose = 1;
 		break;
+	    case 'd':
+		dither = 0;
+		break;
 	    case '?':
 		fprintf(stderr, "Ignoring unknown option: -%c\n", optopt);
 	}
     }
 
-    // check if there is still two arguments remaining, for i/o
+    /* check if there is still two arguments remaining, for i/o */
     if (argc - optind != 2) {
 	fprintf(stderr,
-	    "Usage: %s [-p palette[.size]] [-v] input output\n", argv[0]);
+	    "Usage: %s [-p palette[.size]] [-dv] input output\n", argv[0]);
 	return 1;
     }
 
-    // all arguments ok
+    /* all arguments ok */
     inputFile = argv[optind];
     outputFile = argv[optind+1];
 
@@ -61,7 +65,7 @@ main(int argc, char ** argv)
     DTPalette *palette = PaletteForIdentifier(paletteID, input);
     if (palette == NULL) return 3;
 
-    // dump palette if verbose option was set
+    /* dump palette if verbose option was set */
     if (verbose)
 	for (int i = 0; i < palette->size; i++)
 	    printf("%d %d %d\n",
@@ -70,7 +74,19 @@ main(int argc, char ** argv)
 		palette->colors[i].b
 	    );
 
-    ApplyFloydSteinbergDither(input, palette);
+    if (dither) {
+	ApplyFloydSteinbergDither(input, palette);
+    } else {
+	/* closest color only */
+	DTPixel *pixel;
+	for (int i = 0; i < input->height; i++) {
+	    for (int j = 0; j < input->width; j++) {
+		pixel = &input->pixels[i*input->width + j];
+		*pixel = FindClosestColorFromPalette(*pixel, palette);
+	    }
+	}
+    }
+
     WriteImageToFile(input, outputFile);
 
     return 0;
@@ -87,7 +103,7 @@ PaletteForIdentifier(char *str, DTImage *image)
     sizeStr = strtok(NULL, sep);
     int size = 0;
 
-    // if size was inserted, transform to int and check if is valid
+    /* if size was inserted, transform to int and check if is valid */
     if (sizeStr) {
 	size = (int)strtol(sizeStr, (char **)NULL, 10);
 	if (size <= 0) {
@@ -96,7 +112,7 @@ PaletteForIdentifier(char *str, DTImage *image)
 	}
     }
 
-    // RGB
+    /* RGB */
     if (strcmp(name, "rgb") == 0) {
 	if (size) fprintf(stderr, "Ignored palette size.\n");
 	return StandardPaletteRGB();
@@ -133,7 +149,7 @@ PaletteForIdentifier(char *str, DTImage *image)
 	return QuantizedPaletteForImage(image, size);
     }
 
-    // unknown palette
+    /* unknown palette */
     fprintf(stderr, "Unrecognized palette identifier, aborting.\n");
     return NULL;
 }
