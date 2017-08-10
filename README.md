@@ -12,8 +12,8 @@ Running `make` will compile the program and generate the documentation
 appropriated directories in your system.
 
     $ make
-    $ mv dither ~/bin
-    $ mv dither.1 ~/share/man/man1
+    $ mv dither /usr/local/bin
+    $ mv dither.1 /usr/local/share/man/man1
 
 Individual targets can also be specified for only compiling or generating the
 manual page:
