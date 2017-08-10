@@ -38,7 +38,6 @@ processing an image. Other possible palettes include:
  - Custom palette
 
 Dithering on the final image can be disabled and the program also can be used
-to just generate a palette. For a B&W palette with no dithering, threshold
-control is available.
+to just generate a palette.
 
  [ppm]: https://en.wikipedia.org/wiki/Netpbm_format
