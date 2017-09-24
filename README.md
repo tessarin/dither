@@ -7,16 +7,22 @@ dithering implemented with the Floyd-Steinberg method.
 
 ## Installing
 
+#### On macOS with [Homebrew][brew]
+
+    $ brew install tessarin/core/dither
+
+#### Manual Instalation
+
 Running `make` will compile the program and generate the documentation
 (requires Perl). To install, move the executable and manual file to the
-appropriated directories in your system.
+appropriate directories.
 
     $ make
-    $ mv dither /usr/local/bin
-    $ mv dither.1 /usr/local/share/man/man1
+    $ mv dither ~/bin
+    $ mv dither.1 ~/man/man1
 
 Individual targets can also be specified for only compiling or generating the
-manual page:
+[manual][man] page:
 
     $ make dither
     $ make doc
@@ -41,3 +47,5 @@ Dithering on the final image can be disabled and the program also can be used
 to just generate a palette.
 
  [ppm]: https://en.wikipedia.org/wiki/Netpbm_format
+ [brew]: https://brew.sh
+ [man]: dither.pod
