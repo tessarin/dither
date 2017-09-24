@@ -23,7 +23,7 @@ manual page:
 
 ## Usage
 
-    $ dither [-p name.size] [-v] input output
+    $ dither [-p name.size] [-dv] input output
 
 Detailed information about the program options are included in the manual.
 

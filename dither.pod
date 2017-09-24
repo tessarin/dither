@@ -4,7 +4,7 @@ B<dither> -- reduce number of colors in an image with dithering
 
 =head1 SYNOPSIS
 
-B<dither> [I<-v>] [I<-p name>[.I<size>]] I<input> I<output>
+B<dither> [I<-dv>] [I<-p name>[.I<size>]] I<input> I<output>
 
 =head1 DESCRIPTION
 
@@ -99,9 +99,8 @@ saving the final image:
 
 =head1 ACKNOWLEDGEMENTS
 
-Thank you Robert W. Floyd, Louis Steinberg and Paul Heckbert not only for your
-algorithms but for all your work and efforts, always helping the development
-of technology.
+Thank you Robert W. Floyd, Louis Steinberg and Paul Heckbert for your work and
+development of these algorithms.
 
 =head1 AUTHORS
 
