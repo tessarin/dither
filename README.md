@@ -22,7 +22,7 @@ appropriate directories.
     $ mv dither.1 ~/man/man1
 
 Individual targets can also be specified for only compiling or generating the
-[manual][man] page:
+manual page:
 
     $ make dither
     $ make doc
@@ -31,7 +31,8 @@ Individual targets can also be specified for only compiling or generating the
 
     $ dither [-p name.size] [-dv] input output
 
-Detailed information about the program options are included in the manual.
+Detailed information about the program options are included in the
+[manual][man].
 
 ## Features
 
