@@ -11,7 +11,7 @@ dithering implemented with the Floyd-Steinberg method.
 
     $ brew install tessarin/core/dither
 
-#### Manual Instalation
+#### Manual Installation
 
 Running `make` will compile the program and generate the documentation
 (requires Perl). To install, move the executable and manual file to the
