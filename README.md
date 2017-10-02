@@ -40,12 +40,12 @@ By default, `dither` will use a 3-bit RGB palette and dithering when
 processing an image. Other possible palettes include:
 
  - Grayscale of any given size
- - Automatic, generated with the given size using the median-cut quantization
+ - Automatic, generated with the given size using a median-cut quantization
    algorithm
  - Custom palette
 
-Dithering on the final image can be disabled and the program also can be used
-to just generate a palette.
+Dithering on the final image can be disabled and the program can also be used
+just to generate a palette.
 
  [ppm]: https://en.wikipedia.org/wiki/Netpbm_format
  [brew]: https://brew.sh
