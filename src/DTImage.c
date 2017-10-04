@@ -16,6 +16,7 @@
 
 int ReadDataFromFile(DTImage *img, FILE *file);
 DTImageType IdentifyImageType(char *header);
+png_bytep *PNGRowPointersForImage(DTImage *);
 
 DTImage *
 CreateImageFromFile(char *filename)
@@ -141,16 +142,10 @@ ReadDataFromFile(DTImage *img, FILE *file)
 	img->pixels = malloc(sizeof(DTPixel) * img->width * img->height);
 
 	/* check if data is realy 8-bit RGB */
-	png_size_t rowSize = png_get_rowbytes(png, info);
-	if (rowSize != img->width * sizeof(DTPixel))
+	if (png_get_rowbytes(png, info) != img->width * sizeof(DTPixel))
 	    return 4;
 
-	/* setup array of pointers used by libpng to
-	 * point to our own allocated memory */
-	png_bytep *rowPointers = malloc(sizeof(png_bytep) * img->height);
-	for (int i = 0; i < img->height; i++)
-	    rowPointers[i] = (png_bytep)img->pixels + rowSize * i;
-
+	png_bytep *rowPointers = PNGRowPointersForImage(img);
 	png_read_image(png, rowPointers);
 
 	/* finish reading and cleanup memory */
@@ -172,4 +167,18 @@ IdentifyImageType(char *header)
 	return t_PPM;
 
     return t_UNKNOWN;
+}
+
+/* setup array of pointers used by libpng to
+ * point to our own allocated memory */
+png_bytep *
+PNGRowPointersForImage(DTImage *img)
+{
+    png_bytep *rowPointers = malloc(sizeof(png_bytep) * img->height);
+    png_size_t rowSize = img->width * sizeof(DTPixel);
+
+    for (int i = 0; i < img->height; i++)
+	rowPointers[i] = (png_bytep)img->pixels + rowSize * i;
+
+    return rowPointers;
 }
