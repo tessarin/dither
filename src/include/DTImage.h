@@ -22,6 +22,12 @@ typedef struct {
     DTPixel *pixels;
 } DTImage;
 
+typedef enum {
+    t_PPM,
+    t_PNG,
+    t_UNKNOWN
+} DTImageType;
+
 DTImage *CreateImageFromFile(char *filename);
 void WriteImageToFile(DTImage *img, char *filename);
 
