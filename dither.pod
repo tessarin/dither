@@ -8,16 +8,21 @@ B<dither> [I<-dv>] [I<-p name>[.I<size>]] I<input> I<output>
 
 =head1 DESCRIPTION
 
-B<dither> processes image files in binary PPM format with the goal of reducing
-its number of colors. Functionality includes generating a palette of colors
-automatically and writing the output image with the signal optionally dithered
-(Floyd-Steinberg method).
+B<dither> processes image files in PNG or binary PPM format with the goal of
+reducing its number of colors. Functionality includes generating a palette of
+colors automatically and writing the output image with the signal optionally
+dithered (Floyd-Steinberg method).
 
 Arguments for the input and output file are both required.
 
 The palette used in the operation can be generated from different presets and
 sizes, or be completely customized. Details about palette generation are
 described below in the corresponding section.
+
+The input file format is deduced by analysing the image header. The output
+file format is decided according to its extension. Use a C<.png> extension to
+have output written as a PNG file. Any other extension will result in a binary
+PPM file.
 
 =head2 Options
 

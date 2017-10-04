@@ -1,21 +1,22 @@
 # Dither - Color Quantization and Dithering
 
 This is a small program dedicated to reducing the number of colors in an
-image. It operates with files in binary PPM format ([Portable PixMap][ppm]),
-and features automatic palette generation (using a median-cut algorithm) and
-dithering implemented with the Floyd-Steinberg method.
+image. It operates with files in PNG or binary PPM format ([Portable
+PixMap][ppm]), and features automatic palette generation (using a median-cut
+algorithm) and dithering implemented with the Floyd-Steinberg method.
 
 ## Installing
 
-#### On macOS with [Homebrew][brew]
+#### On macOS with [Homebrew][brw]
 
     $ brew install tessarin/core/dither
 
 #### Manual Installation
 
-Running `make` will compile the program and generate the documentation
-(requires Perl). To install, move the executable and manual file to the
-appropriate directories.
+Install [`libpng`][lpg] if you haven't already. Running `make` will then
+compile the program and generate the documentation (requires Perl). To
+install, move the executable and manual file to your desired and appropriate
+directories in your system.
 
     $ make
     $ mv dither ~/bin
@@ -48,5 +49,6 @@ Dithering on the final image can be disabled and the program can also be used
 just to generate a palette.
 
  [ppm]: https://en.wikipedia.org/wiki/Netpbm_format
- [brew]: https://brew.sh
+ [brw]: https://brew.sh
+ [lpg]: http://www.libpng.org/pub/png/libpng.html
  [man]: dither.pod
