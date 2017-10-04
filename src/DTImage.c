@@ -8,6 +8,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <DTImage.h>
 #include <png.h>
 
@@ -56,15 +57,61 @@ CreateImageFromFile(char *filename)
 void
 WriteImageToFile(DTImage *img, char *filename)
 {
-    FILE *file = fopen(filename, "w");
+    FILE *file = fopen(filename, "wb");
     if (file == NULL) {
 	perror("Could not open output file");
 	return;
     }
 
-    fprintf(file, "P6\n%d %d\n255\n", img->width, img->height);
-    for (int i = 0; i < img->resolution; i++)
-	fwrite(&img->pixels[i], sizeof(DTPixel), 1, file);
+    /* judge desired output format by file extension */
+    size_t fn_l = strlen(filename);
+    size_t png_l = strlen(e_PNG);
+
+    if (fn_l > png_l && !strcmp(filename+fn_l-png_l, e_PNG)) {
+	/* PNG */
+
+	/* create data and info structs */
+	png_structp png = png_create_write_struct(
+	    PNG_LIBPNG_VER_STRING, NULL, NULL, NULL
+	);
+	if (!png) return;
+
+	png_infop info = png_create_info_struct(png);
+	if (!info) return;
+
+	if(setjmp(png_jmpbuf(png))) return;
+
+	png_init_io(png, file);
+
+	/* output in 8-bit RGB */
+	png_set_IHDR(
+	    png,
+	    info,
+	    img->width, img->height,
+	    8,
+	    PNG_COLOR_TYPE_RGB,
+	    PNG_INTERLACE_NONE,
+	    PNG_COMPRESSION_TYPE_DEFAULT,
+	    PNG_FILTER_TYPE_DEFAULT
+	);
+	png_write_info(png, info);
+
+	png_bytep *rowPointers = PNGRowPointersForImage(img);
+	png_write_image(png, rowPointers);
+
+	/* finish writing and cleanup memory */
+	png_write_end(png, NULL);
+	png_destroy_write_struct(&png, &info);
+	free(rowPointers);
+
+    } else {
+	/* PPM */
+	fprintf(file, "P6\n%d %d\n255\n", img->width, img->height);
+	for (int i = 0; i < img->resolution; i++)
+	    fwrite(&img->pixels[i], sizeof(DTPixel), 1, file);
+    }
+
+    fclose(file);
 }
 
 DTPixel

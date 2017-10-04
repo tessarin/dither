@@ -9,6 +9,9 @@
 #ifndef DT_IMAGE
 #define DT_IMAGE
 
+#define e_PPM ".ppm"
+#define e_PNG ".png"
+
 typedef unsigned char byte;
 
 typedef struct {
