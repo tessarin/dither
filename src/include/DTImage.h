@@ -15,18 +15,19 @@ typedef struct {
     byte r, g, b;
 } DTPixel;
 
-typedef struct {
-    int width;
-    int height;
-    unsigned long resolution;
-    DTPixel *pixels;
-} DTImage;
-
 typedef enum {
     t_PPM,
     t_PNG,
     t_UNKNOWN
 } DTImageType;
+
+typedef struct {
+    int width;
+    int height;
+    DTImageType type;
+    unsigned long resolution;
+    DTPixel *pixels;
+} DTImage;
 
 DTImage *CreateImageFromFile(char *filename);
 void WriteImageToFile(DTImage *img, char *filename);
