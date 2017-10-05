@@ -13,17 +13,16 @@ algorithm) and dithering implemented with the Floyd-Steinberg method.
 
 #### Manual Installation
 
-Install [`libpng`][lpg] if you haven't already. Running `make` will then
-compile the program and generate the documentation (requires Perl). To
-install, move the executable and manual file to your desired and appropriate
-directories in your system.
+First, install [`libpng`][lpg]. Running `make` will then compile the program
+and generate the documentation (requires Perl). To install, move the
+executable and manual files to appropriate directories in your system.
 
     $ make
     $ mv dither ~/bin
     $ mv dither.1 ~/man/man1
 
-Individual targets can also be specified for only compiling or generating the
-manual page:
+Individual targets can also be specified to only compile the program or to
+generate the manual page:
 
     $ make dither
     $ make doc
@@ -47,6 +46,31 @@ processing an image. Other possible palettes include:
 
 Dithering on the final image can be disabled and the program can also be used
 just to generate a palette.
+
+## Samples
+
+#### Automatic Palette
+
+    $ dither -p auto.32 bird-original.png bird-auto.32.png
+
+![original bird](samples/bird-original.png)
+![generated bird](samples/bird-auto.32.png)
+
+#### 1-bit Black & White
+
+    $ dither -p bw flower-original.png flower-bw.png
+
+![original flower](samples/flower-original.png)
+![generated flower](samples/flower-bw.png)
+
+#### 50% Gray Test
+
+Generates a perfect checkerboard pattern.
+
+    $ dither -p bw gray-original.png gray-dithered.png
+
+![original gray](samples/gray-original.png)
+![dithered gray](samples/gray-dithered.png)
 
  [ppm]: https://en.wikipedia.org/wiki/Netpbm_format
  [brw]: https://brew.sh
