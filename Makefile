@@ -1,4 +1,5 @@
 CFLAGS = -Wall -Isrc/include
+LDLIBS = -lpng
 
 SRCDIR = src
 OBJDIR = obj
@@ -9,7 +10,7 @@ OBJECTS := $(SOURCES:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 all: dither doc
 
 dither: $(OBJECTS)
-	$(CC) -o $@ $^
+	$(CC) $^ $(LDLIBS) -o $@
 
 analyse:
 	clang $(CFLAGS) --analyze $(SOURCES)
