@@ -1,5 +1,5 @@
 CFLAGS = -Wall -Isrc/include
-LDLIBS = -lpng
+LDLIBS = -lpng -lm
 
 SRCDIR = src
 OBJDIR = obj
